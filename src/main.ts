@@ -1,18 +1,15 @@
-import readJson from 'read-package-json';
-import path, { dirname } from 'path';
+import { dirname } from 'path';
+import { backup, getPackageJson, restore } from './common/package-utils';
 
-const __dirname = path.resolve(dirname('./'), 'src');
-const parentDir = path.dirname(__dirname);
-readJson(
-  `${parentDir}/package.json`,
-  console.error,
-  false,
-  function (er: NodeJS.ErrnoException, data: Record<string, any>) {
-    if (er) {
-      console.error(er);
-      return;
-    }
+// setting global variable to the parent directory.
+global._projectDir = dirname(__dirname);
 
-    console.error('the package data is', data);
-  },
-);
+async function main() {
+  const packageJson = await getPackageJson();
+  const backupPackage = await backup(packageJson);
+  console.log('Backup complete');
+  await restore(backupPackage);
+  console.log('Restore complete');
+}
+
+main();
