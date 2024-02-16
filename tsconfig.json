@@ -1,4 +1,13 @@
 {
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "ESNext",
+      "esModuleInterop": true
+    },
+    "esm": true
+  },
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
