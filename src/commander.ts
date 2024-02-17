@@ -7,7 +7,7 @@ type CommandOptions = {
 interface CommanderProps {
   command: string;
   commandOptions?: CommandOptions[];
-  subCommand?: Commander;
+  subCommands?: Commander[];
   script: (options: Record<string, any>) => void;
 }
 
@@ -15,21 +15,27 @@ export class Commander {
   constructor(props: CommanderProps) {
     this.command = props.command;
     this.commandOptions = props.commandOptions;
-    this.subCommand = props.subCommand;
+    this.subCommands = props.subCommands ?? [];
     this.script = props.script;
   }
 
   private readonly command: string;
   private readonly commandOptions: CommandOptions[];
-  private readonly subCommand: Commander;
+  private readonly subCommands: Commander[];
   private readonly script: (options: Record<string, any>) => void;
 
   run(args: string[]): boolean {
     if (this.extractCommand(args, this.command)) {
-      if (this.subCommand && this.subCommand.command) {
-        const subcommand = this.subCommand.run(args);
-        if (subcommand) {
-          return true;
+      if (!this.checkSubCommands(this.subCommands, args)) {
+        throw new Error(`Command ${args[0]} not found`);
+      }
+
+      for (const subCommand of this.subCommands) {
+        if (subCommand && subCommand.command) {
+          const subcommand = subCommand.run(args);
+          if (subcommand) {
+            return true;
+          }
         }
       }
 
@@ -40,7 +46,11 @@ export class Commander {
       }
 
       this.script(options);
+
+      return true;
     }
+
+    return false;
   }
 
   private extractCommand(args: string[], command: string): string | null {
@@ -71,10 +81,20 @@ export class Commander {
   ) {
     for (const option of commandOptions) {
       if (option.required) {
-        if (!options[option.option]) {
-          throw new Error(`Option ${option.option} is required`);
+        if (!options[option.option] && !options[option.shortOption]) {
+          throw new Error(
+            `Option [${option.option} or ${option.shortOption}] is required`,
+          );
         }
       }
     }
+  }
+
+  private checkSubCommands(subCommands: Commander[], args: string[]) {
+    const isCommandOption = args[0].startsWith('-');
+    const isSubcommand =
+      subCommands.find((subCommand) => subCommand.command === args[0]) !==
+      undefined;
+    return isCommandOption || isSubcommand;
   }
 }

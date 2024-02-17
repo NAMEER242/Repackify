@@ -37,4 +37,32 @@ new Commander({
   script: (options) => {
     console.log(options);
   },
-}).run(['test', '--option', 'value']);
+  subCommands: [
+    new Commander({
+      command: 'sub',
+      commandOptions: [
+        {
+          option: '--sub',
+          shortOption: '-s',
+          required: true,
+        },
+      ],
+      script: (options) => {
+        console.log(options);
+      },
+    }),
+    new Commander({
+      command: 'sub2',
+      commandOptions: [
+        {
+          option: '--sub2',
+          shortOption: '-s2',
+          required: true,
+        },
+      ],
+      script: (options) => {
+        console.log(options);
+      },
+    }),
+  ],
+}).run(['test', 'sub', '-s', 'value']);
