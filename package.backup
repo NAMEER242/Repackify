@@ -5,6 +5,14 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "repackify": {
+    "remove": [
+      "test"
+    ],
+    "operations": {
+      "test": "test2"
+    }
+  },
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "ts-node src/main.ts",
