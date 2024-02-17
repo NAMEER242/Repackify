@@ -9,6 +9,7 @@ interface CommanderProps {
   commandOptions?: CommandOptions[];
   subCommands?: Commander[];
   script: (options: Record<string, any>) => Promise<void>;
+  isDefault?: boolean;
 }
 
 export class Commander {
@@ -17,17 +18,21 @@ export class Commander {
     this.commandOptions = props.commandOptions;
     this.subCommands = props.subCommands ?? [];
     this.script = props.script;
+    this.isDefault = props.isDefault ?? false;
   }
 
   private readonly command: string;
   private readonly commandOptions: CommandOptions[];
   private readonly subCommands: Commander[];
   private readonly script: (options: Record<string, any>) => Promise<void>;
+  private readonly isDefault: boolean = false;
 
   async run(args: string[]): Promise<boolean> {
-    if (this.extractCommand(args, this.command)) {
+    if (this.extractCommand(args, this.command) || this.isDefault) {
       if (!this.checkSubCommands(this.subCommands, args)) {
-        throw new Error(`Command ${args[0]} not found`);
+        const error = `Command "${args[0]}" not found`;
+        global._logger.error(error);
+        throw new Error(error);
       }
 
       for (const subCommand of this.subCommands) {
@@ -94,9 +99,9 @@ export class Commander {
     for (const option of commandOptions) {
       if (option.required) {
         if (!options[option.option] && !options[option.shortOption]) {
-          throw new Error(
-            `Option [${option.option} or ${option.shortOption}] is required`,
-          );
+          const error = `Option [${option.option} or ${option.shortOption}] is required`;
+          global._logger.error(error);
+          throw new Error(error);
         }
       }
     }

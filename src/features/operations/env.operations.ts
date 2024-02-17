@@ -1,10 +1,12 @@
+const envRegex = /!\{(.*?)}/;
+
 export const extractEnvRegex = (text: string): string | null => {
-  const match = text.match(/!<(.*?)>/);
+  const match = text.match(envRegex);
   return match ? match[1] : null;
 };
 
 export const replaceEnvRegex = (text: string, replacement: string): string => {
-  return text.replace(/!<(.*?)>/, replacement);
+  return text.replace(envRegex, replacement);
 };
 
 export const replaceEnvKeyRecursively = (

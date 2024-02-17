@@ -1,3 +1,7 @@
 module.exports = {
-  add: { test: 'test' },
+  customOperation: [
+    (record) => {
+      console.log(record);
+    },
+  ],
 };

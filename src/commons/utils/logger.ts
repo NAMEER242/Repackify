@@ -5,14 +5,14 @@ export class Logger {
     `\x1b[${code}m${messages.join(' ')}${ended ? '\x1b[0m' : ''}`;
 
   coloredText = {
-    black: this._color.bind(null, 30, false),
-    red: this._color.bind(null, 31, false),
-    green: this._color.bind(null, 32, false),
-    yellow: this._color.bind(this, 33, false),
-    blue: this._color.bind(this, 34, false),
-    magenta: this._color.bind(this, 35, false),
-    cyan: this._color.bind(this, 36, false),
-    white: this._color.bind(this, 37, false),
+    black: this._color.bind(this, 30, true),
+    red: this._color.bind(this, 31, true),
+    green: this._color.bind(this, 32, true),
+    yellow: this._color.bind(this, 33, true),
+    blue: this._color.bind(this, 34, true),
+    magenta: this._color.bind(this, 35, true),
+    cyan: this._color.bind(this, 36, true),
+    white: this._color.bind(this, 37, true),
     bgBlack: this._color.bind(this, 40, true),
     bgRed: this._color.bind(this, 41, true),
     bgGreen: this._color.bind(this, 42, true),

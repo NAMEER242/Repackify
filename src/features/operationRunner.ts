@@ -34,11 +34,14 @@ export const operationRunner = (
 
   if (config.customOperation) {
     config.customOperation.forEach((customOperation) => {
-      packProps = operations.customOperation(packProps, customOperation);
+      const result = operations.customOperation(packProps, customOperation);
+      if (result) {
+        packProps = result;
+      }
     });
   }
 
   packProps = filterPackageJson(packProps);
-  packProps = replaceEnvPlaceholders(replaceEnvPlaceholders, env);
+  packProps = replaceEnvPlaceholders(packProps, env);
   return packProps;
 };

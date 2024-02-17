@@ -2,19 +2,13 @@
   "name": "repackify",
   "version": "0.0.1",
   "description": "___",
-  "author": "",
+  "author": {
+    "name": "nameer"
+  },
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bin": {
     "repack": "lib/main.js"
-  },
-  "repackify": {
-    "remove": [
-      "test"
-    ],
-    "add": {
-      "test": "test2"
-    }
   },
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
