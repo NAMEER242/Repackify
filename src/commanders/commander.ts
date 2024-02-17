@@ -39,12 +39,12 @@ export class Commander {
     this.isDefault = props.isDefault ?? false;
   }
 
-  private readonly command: string;
-  private readonly description: string;
-  private readonly commandOptions: CommandOptions[];
-  private readonly subCommands: Commander[];
-  private readonly script: (options: Record<string, any>) => Promise<void>;
-  private readonly isDefault: boolean = false;
+  public readonly command: string;
+  public readonly description: string;
+  public readonly commandOptions: CommandOptions[];
+  public readonly subCommands: Commander[];
+  public readonly script: (options: Record<string, any>) => Promise<void>;
+  public readonly isDefault: boolean = false;
 
   async run(args: string[]): Promise<boolean> {
     if (this.extractCommand(args, this.command) || this.isDefault) {

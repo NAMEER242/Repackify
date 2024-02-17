@@ -4,6 +4,11 @@
 export * from './commands/package.command';
 
 /**
+ * Export Command Runner:
+ */
+export * from './command-runner';
+
+/**
  * Export SubCommands:
  */
 export * from './subcommands/restore.subcommand';

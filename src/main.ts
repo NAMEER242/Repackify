@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { dirname } from 'path';
-import { packageCommand } from './commanders';
+import { CommandRunner, packageCommand } from './commanders';
 import { Logger } from './commons/utils';
 
 // setting global variable to the parent directory.
@@ -15,4 +15,9 @@ global.configs = {
   backupDir: `${global._projectDir}/package.backup`,
 };
 
-packageCommand.run(process.argv.slice(2));
+async function bootstrap() {
+  const commandApp = new CommandRunner([packageCommand]);
+  await commandApp.run();
+}
+
+bootstrap();
