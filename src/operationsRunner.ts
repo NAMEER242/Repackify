@@ -1,10 +1,12 @@
-import { ConfigDto } from '../common/dto';
-import * as operations from './operations';
-import { filterPackageJson } from '../common/package-utils';
+import { ConfigDto } from './common/dto';
+import * as operations from './features/basic.operations';
+import { filterPackageJson } from './common/package-utils';
+import { replaceEnvPlaceholders } from './features/env.operations';
 
 export const operationsRunner = (
   packProps: Record<string, any>,
   config: ConfigDto,
+  env: Record<string, string>,
 ): Record<string, any> => {
   if (config.add) {
     config.add.forEach((prop) => {
@@ -36,5 +38,7 @@ export const operationsRunner = (
     });
   }
 
-  return filterPackageJson(packProps);
+  packProps = filterPackageJson(packProps);
+  packProps = replaceEnvPlaceholders(replaceEnvPlaceholders, env);
+  return packProps;
 };
