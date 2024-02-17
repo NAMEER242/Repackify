@@ -54,6 +54,10 @@ export class Commander {
   }
 
   private extractCommand(args: string[], command: string): string | null {
+    if (args.length === 0) {
+      return null;
+    }
+
     const commandExists = command == args[0];
 
     if (commandExists) {
@@ -64,11 +68,19 @@ export class Commander {
     }
   }
 
+  private removeCommandOptionPrefix(args: string) {
+    return args.replace(/^-+/g, '');
+  }
+
   private getCommandOptions(args: string[], options: CommandOptions[]) {
+    if (args.length === 0 || options.length === 0) {
+      return {};
+    }
     const finalOptions: Record<string, any> = {};
     for (const option of options) {
       if (option.option === args[0] || option.shortOption === args[0]) {
-        finalOptions[args[0]] = args[1];
+        const key = this.removeCommandOptionPrefix(args[0]);
+        finalOptions[key] = args[1];
         args.splice(0, 2);
       }
     }
@@ -91,6 +103,9 @@ export class Commander {
   }
 
   private checkSubCommands(subCommands: Commander[], args: string[]) {
+    if (args.length === 0 || subCommands.length === 0) {
+      return true;
+    }
     const isCommandOption = args[0].startsWith('-');
     const isSubcommand =
       subCommands.find((subCommand) => subCommand.command === args[0]) !==
