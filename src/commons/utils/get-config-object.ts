@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ConfigDto } from '../dto';
+import { ConfigDto } from '../dtos';
 
 export const getConfigFromJSFile = (): ConfigDto | null => {
   const filePath = path.join(global._projectDir, 'repackify.js');

@@ -4,11 +4,13 @@ import { filterPackageJson } from './filter-package-json';
 
 const writeFile = promisify(fs.writeFile);
 
-export const restore = async (
+export const backup = async (
   record: Record<string, any>,
-  packageName = 'package.json',
+  backupPath: string,
 ) => {
   record = filterPackageJson(record);
   const data = JSON.stringify(record, null, 2);
-  await writeFile(`${global._projectDir}/${packageName}`, data);
+  await writeFile(backupPath, data);
+
+  return record;
 };

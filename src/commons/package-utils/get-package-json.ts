@@ -1,12 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const readJson = require('read-package-json');
 
-export const getPackageJson = (packageName = 'package.json') => {
+export const getPackageJson = (packagePath: string) => {
   return new Promise<Record<string, any>>((resolve, reject) => {
-    const packageJsonPath = `${global._projectDir}/${packageName}`;
-
     readJson(
-      packageJsonPath,
+      packagePath,
       console.error,
       false,
       (er: NodeJS.ErrnoException, data: Record<string, any>) => {

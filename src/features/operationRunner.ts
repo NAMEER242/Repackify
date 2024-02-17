@@ -1,9 +1,9 @@
-import { ConfigDto } from './common/dto';
-import * as operations from './features/basic.operations';
-import { filterPackageJson } from './common/package-utils';
-import { replaceEnvPlaceholders } from './features/env.operations';
+import { ConfigDto } from '../commons/dtos';
+import * as operations from './operations/basic.operations';
+import { filterPackageJson } from '../commons/package-utils';
+import { replaceEnvPlaceholders } from './operations/env.operations';
 
-export const operationsRunner = (
+export const operationRunner = (
   packProps: Record<string, any>,
   config: ConfigDto,
   env: Record<string, string>,

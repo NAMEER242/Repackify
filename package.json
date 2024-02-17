@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "bin": {
+    "repack": "lib/main.js"
+  },
   "repackify": {
     "remove": [
       "test"

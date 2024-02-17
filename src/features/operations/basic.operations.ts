@@ -1,4 +1,4 @@
-import { filterPackageJson } from '../common/package-utils';
+import { filterPackageJson } from '../../commons/package-utils';
 
 export const add = (
   packProps: Record<string, any>,

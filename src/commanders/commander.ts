@@ -8,7 +8,7 @@ interface CommanderProps {
   command: string;
   commandOptions?: CommandOptions[];
   subCommands?: Commander[];
-  script: (options: Record<string, any>) => void;
+  script: (options: Record<string, any>) => Promise<void>;
 }
 
 export class Commander {
@@ -22,9 +22,9 @@ export class Commander {
   private readonly command: string;
   private readonly commandOptions: CommandOptions[];
   private readonly subCommands: Commander[];
-  private readonly script: (options: Record<string, any>) => void;
+  private readonly script: (options: Record<string, any>) => Promise<void>;
 
-  run(args: string[]): boolean {
+  async run(args: string[]): Promise<boolean> {
     if (this.extractCommand(args, this.command)) {
       if (!this.checkSubCommands(this.subCommands, args)) {
         throw new Error(`Command ${args[0]} not found`);
@@ -32,7 +32,7 @@ export class Commander {
 
       for (const subCommand of this.subCommands) {
         if (subCommand && subCommand.command) {
-          const subcommand = subCommand.run(args);
+          const subcommand = await subCommand.run(args);
           if (subcommand) {
             return true;
           }
@@ -45,7 +45,7 @@ export class Commander {
         this.checkForRequiredOptions(this.commandOptions, options);
       }
 
-      this.script(options);
+      await this.script(options);
 
       return true;
     }
@@ -79,7 +79,7 @@ export class Commander {
     const finalOptions: Record<string, any> = {};
     for (const option of options) {
       if (option.option === args[0] || option.shortOption === args[0]) {
-        const key = this.removeCommandOptionPrefix(args[0]);
+        const key = this.removeCommandOptionPrefix(option.option);
         finalOptions[key] = args[1];
         args.splice(0, 2);
       }

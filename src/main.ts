@@ -1,16 +1,25 @@
 import { dirname } from 'path';
-import { backup, getPackageJson, restore } from './common/package-utils';
-import { getConfig } from './common/utils';
-import { Commander } from './commander';
+import { backup, getPackageJson, restore } from './commons/package-utils';
+import { getConfig } from './commons/utils';
+import { packageCommand } from './commanders';
+import { Logger } from './commons/utils/logger';
 
 // setting global variable to the parent directory.
 global._projectDir = dirname(__dirname);
 
+// setting global logger.
+global._logger = new Logger('Repackify');
+
+global.configs = {
+  packageDir: `${global._projectDir}/package.json`,
+  backupDir: `${global._projectDir}/package.backup`,
+};
+
 async function main() {
-  const packageJson = await getPackageJson();
-  const backupPackage = await backup(packageJson);
+  const packageJson = await getPackageJson(global.configs.packageDir);
+  const backupPackage = await backup(packageJson, global.configs.backupDir);
   console.log('Backup complete');
-  await restore(backupPackage);
+  await restore(backupPackage, global.configs.packageDir);
   console.log('Restore complete');
 
   const config = getConfig(packageJson);
@@ -19,50 +28,4 @@ async function main() {
 
 // main();
 
-// console.log(process.argv.slice(2));
-
-new Commander({
-  command: 'test',
-  commandOptions: [
-    {
-      option: '--option',
-      shortOption: '-o',
-      required: true,
-    },
-    {
-      option: '--t',
-      shortOption: '-t',
-    },
-  ],
-  script: (options) => {
-    console.log(options);
-  },
-  subCommands: [
-    new Commander({
-      command: 'sub',
-      commandOptions: [
-        {
-          option: '--sub',
-          shortOption: '-s',
-          required: true,
-        },
-      ],
-      script: (options) => {
-        console.log(options);
-      },
-    }),
-    new Commander({
-      command: 'sub2',
-      commandOptions: [
-        {
-          option: '--sub2',
-          shortOption: '-s2',
-          required: true,
-        },
-      ],
-      script: (options) => {
-        console.log(options);
-      },
-    }),
-  ],
-}).run(['test', 'sub', '-s', 'value']);
+packageCommand.run(process.argv.slice(2));
