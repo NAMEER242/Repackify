@@ -1,24 +1,34 @@
-import { Commander } from '../commander';
-import { operationRunner } from '../../features/operationRunner';
-import { backup, getPackageJson, restore } from '../../commons/package-utils';
-import { getConfig, loadEnv } from '../../commons/utils';
+import { Commander, HelpDoc } from '../commander';
+import { packageService } from '../providers/package.service';
+import { formatCommandHelpDoc } from '../../commons/utils';
 
 export const refactorSubcommand = new Commander({
   command: 'refactor',
+  description: 'Refactor package.json file using the provided configuration.',
   commandOptions: [
-    { option: '--env', shortOption: '-e' },
-    { option: '--extra_env', shortOption: '-ee' },
+    {
+      option: '--env',
+      shortOption: '-e',
+      description: 'Path to the base .env file.',
+    },
+    {
+      option: '--extra_env',
+      shortOption: '-ee',
+      description: 'Used to set extra .env files (e.g. "-ee .env,.dev.env").',
+    },
+    {
+      option: '--help',
+      shortOption: '-h',
+      description: 'Display help for the command.',
+    },
   ],
   script: async (options) => {
-    const baseEnv = options['env'] ?? '.env';
-    const extraEnvs = (options['extra_env'] ?? '').split(',') ?? [];
+    if (options['help']) {
+      const helpDoc: HelpDoc = refactorSubcommand.getHelpDocs();
+      console.log(formatCommandHelpDoc(helpDoc));
+      return;
+    }
 
-    const packageJson = await getPackageJson(global.configs.packageDir);
-    await backup(packageJson, global.configs.backupDir);
-    const refactorConfig = getConfig(packageJson);
-    const env = loadEnv(baseEnv, extraEnvs);
-    const refactoredPackage = operationRunner(packageJson, refactorConfig, env);
-    await restore(refactoredPackage, global.configs.packageDir);
-    global._logger.success(`Refactor complete.`);
+    await new packageService().refactor(options);
   },
 });

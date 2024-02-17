@@ -1,11 +1,28 @@
+export type HelpDoc = {
+  commandObject: Commander;
+  command: string;
+  description: string | undefined;
+  subCommandsDoc: {
+    command: string;
+    description: string | undefined;
+  }[];
+  optionsDoc?: {
+    option: string;
+    description: string | undefined;
+    required: boolean | undefined;
+  }[];
+};
+
 type CommandOptions = {
   option: string;
   shortOption: string;
+  description?: string;
   required?: boolean;
 };
 
-interface CommanderProps {
+export interface CommanderProps {
   command: string;
+  description?: string;
   commandOptions?: CommandOptions[];
   subCommands?: Commander[];
   script: (options: Record<string, any>) => Promise<void>;
@@ -15,6 +32,7 @@ interface CommanderProps {
 export class Commander {
   constructor(props: CommanderProps) {
     this.command = props.command;
+    this.description = props.description;
     this.commandOptions = props.commandOptions;
     this.subCommands = props.subCommands ?? [];
     this.script = props.script;
@@ -22,6 +40,7 @@ export class Commander {
   }
 
   private readonly command: string;
+  private readonly description: string;
   private readonly commandOptions: CommandOptions[];
   private readonly subCommands: Commander[];
   private readonly script: (options: Record<string, any>) => Promise<void>;
@@ -85,7 +104,8 @@ export class Commander {
     for (const option of options) {
       if (option.option === args[0] || option.shortOption === args[0]) {
         const key = this.removeCommandOptionPrefix(option.option);
-        finalOptions[key] = args[1];
+        const value = args[1] ?? key;
+        finalOptions[key] = !value.startsWith('-') ? value : key;
         args.splice(0, 2);
       }
     }
@@ -116,5 +136,30 @@ export class Commander {
       subCommands.find((subCommand) => subCommand.command === args[0]) !==
       undefined;
     return isCommandOption || isSubcommand;
+  }
+
+  getHelpDocs(): HelpDoc {
+    const subCommandsDoc = (this.subCommands ?? []).map((subCommand) => {
+      return {
+        command: subCommand.command,
+        description: subCommand.description,
+      };
+    });
+
+    const optionsDoc = (this.commandOptions ?? []).map((options) => {
+      return {
+        option: `${options.option} ${options.shortOption}`,
+        description: options.description,
+        required: options.required,
+      };
+    });
+
+    return {
+      commandObject: this,
+      command: this.command,
+      description: this.description,
+      subCommandsDoc,
+      optionsDoc,
+    };
   }
 }

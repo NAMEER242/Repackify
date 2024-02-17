@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { dirname } from 'path';
 import { packageCommand } from './commanders';
-import { Logger } from './commons/utils/logger';
+import { Logger } from './commons/utils';
 
 // setting global variable to the parent directory.
 global._projectDir = dirname(__dirname);
