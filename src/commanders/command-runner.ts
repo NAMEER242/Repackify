@@ -2,10 +2,10 @@ import { Commander } from './commander';
 
 export class CommandRunner {
   constructor(private readonly commands: Commander[]) {
-    this.checkCommands(commands);
+    this.checkDuplicatedCommands(commands);
   }
 
-  private checkCommands(commands: Commander[]): void {
+  private checkDuplicatedCommands(commands: Commander[]): void {
     for (const command of commands) {
       const isDuplicated =
         commands.filter((c) => {

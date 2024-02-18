@@ -48,32 +48,46 @@ export class Commander {
 
   async run(args: string[]): Promise<boolean> {
     if (this.extractCommand(args, this.command) || this.isDefault) {
-      if (!this.checkSubCommands(this.subCommands, args)) {
-        const error = `Command "${args[0]}" not found`;
-        global._logger.error(error);
-        throw new Error(error);
+      // Check if subcommands are executed
+      const isExecuted = await this.runSubcommands(args);
+      if (isExecuted) {
+        return true;
       }
 
-      for (const subCommand of this.subCommands) {
-        if (subCommand && subCommand.command) {
-          const subcommand = await subCommand.run(args);
-          if (subcommand) {
-            return true;
-          }
-        }
-      }
-
-      let options: Record<string, any> = {};
-      if (this.commandOptions) {
-        options = this.getCommandOptions(args, this.commandOptions);
-        this.checkForRequiredOptions(this.commandOptions, options);
-      }
-
+      // Execute the script
+      const options = this.extractOptions(args);
       await this.script(options);
 
       return true;
     }
 
+    return false;
+  }
+
+  private extractOptions(args: string[]) {
+    let options: Record<string, any> = {};
+    if (this.commandOptions) {
+      options = this.getCommandOptions(args, this.commandOptions);
+      this.checkForRequiredOptions(this.commandOptions, options);
+    }
+    return options;
+  }
+
+  private async runSubcommands(args: string[]) {
+    if (!this.checkSubCommands(this.subCommands, args)) {
+      const error = `Command "${args[0]}" not found`;
+      global._logger.error(error);
+      throw new Error(error);
+    }
+
+    for (const subCommand of this.subCommands) {
+      if (subCommand && subCommand.command) {
+        const subcommand = await subCommand.run(args);
+        if (subcommand) {
+          return true;
+        }
+      }
+    }
     return false;
   }
 

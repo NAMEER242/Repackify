@@ -1,3 +1,19 @@
+/**
+ * ╔══════════════════════════════════════╗
+ * ║                                      ║
+ * ║  Code Quality Improvement Notice!!   ║
+ * ║                                      ║
+ * ╠══════════════════════════════════════╣
+ * ║                                      ║
+ * ║   The current state of this file     ║
+ * ║   indicates a need for refinement.   ║
+ * ║   Please consider performing         ║
+ * ║   a thorough code cleanup to enhance ║
+ * ║   maintainability and readability.   ║
+ * ║                                      ║
+ * ╚══════════════════════════════════════╝
+ */
+
 import { HelpDoc } from '../../commanders/commander';
 
 export const formatCommandHelpDoc = (helpDoc: HelpDoc): string => {

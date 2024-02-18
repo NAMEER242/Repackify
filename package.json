@@ -1,15 +1,45 @@
 {
   "name": "repackify",
   "version": "0.0.1",
-  "description": "___",
+  "description": "A new package.json repackager offering a suite of features including refactoring, backing up package.json files, implementing environment variables within package.json, and more.",
   "author": {
-    "name": "nameer"
+    "name": "nameer haider",
+    "email": "nmeer5242@gmail.com",
+    "url": "https://github.com/NAMEER242"
   },
-  "private": true,
+  "keywords": [
+    "package.json",
+    "package",
+    "refactor",
+    "clean",
+    "backup",
+    "environment variables",
+    "env",
+    ".env",
+    "npm",
+    "node",
+    "javascript",
+    "typescript",
+    "repackify",
+    "repackager",
+    "repack"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NAMEER242/repackify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NAMEER242/repackify/issues"
+  },
+  "homepage": "https://github.com/NAMEER242/repackify#readme",
+  "private": false,
   "license": "MIT",
   "bin": {
     "repack": "lib/main.js"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "ts-node src/main.ts",

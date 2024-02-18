@@ -1,14 +1,28 @@
 const envRegex = /!\{(.*?)}/;
 
+/**
+ * Extracts the environment key from a string
+ * @param text
+ */
 export const extractEnvRegex = (text: string): string | null => {
   const match = text.match(envRegex);
   return match ? match[1] : null;
 };
 
+/**
+ * Replaces the environment key in a string with a given replacement
+ * @param text
+ * @param replacement
+ */
 export const replaceEnvRegex = (text: string, replacement: string): string => {
   return text.replace(envRegex, replacement);
 };
 
+/**
+ * Replaces environment keys in a string recursively
+ * @param text
+ * @param env
+ */
 export const replaceEnvKeyRecursively = (
   text: string,
   env: Record<string, string>,
@@ -21,6 +35,11 @@ export const replaceEnvKeyRecursively = (
   return text;
 };
 
+/**
+ * Replaces environment keys in a packProps object recursively
+ * @param packProps
+ * @param env
+ */
 export const replaceEnvPlaceholders = (
   packProps: Record<string, any>,
   env: Record<string, string>,

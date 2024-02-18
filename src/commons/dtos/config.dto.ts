@@ -1,3 +1,7 @@
+/**
+ * The ConfigDto class is used to define the configuration for a refactoring operation,
+ * it contains several properties that determine how the operation should be performed.
+ */
 export class ConfigDto {
   remove: string[];
   replace: Record<string, any>[];
