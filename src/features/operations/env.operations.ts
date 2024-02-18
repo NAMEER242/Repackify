@@ -36,27 +36,27 @@ export const replaceEnvKeyRecursively = (
 };
 
 /**
- * Replaces environment keys in a packProps object recursively
- * @param packProps
+ * Replaces environment keys in a record object recursively
+ * @param record
  * @param env
  */
 export const replaceEnvPlaceholders = (
-  packProps: Record<string, any>,
+  record: Record<string, any>,
   env: Record<string, string>,
 ): any => {
-  for (const key in packProps) {
+  for (const key in record) {
     // set props values env:
-    if (typeof packProps[key] === 'string') {
-      packProps[key] = replaceEnvKeyRecursively(packProps[key], env);
-    } else if (typeof packProps[key] === 'object') {
-      packProps[key] = replaceEnvPlaceholders(packProps[key], env);
+    if (typeof record[key] === 'string') {
+      record[key] = replaceEnvKeyRecursively(record[key], env);
+    } else if (typeof record[key] === 'object') {
+      record[key] = replaceEnvPlaceholders(record[key], env);
     }
     // set props keys env:
     const newKey = replaceEnvKeyRecursively(key, env);
     if (newKey !== key) {
-      packProps[newKey] = packProps[key];
-      delete packProps[key];
+      record[newKey] = record[key];
+      delete record[key];
     }
   }
-  return packProps;
+  return record;
 };

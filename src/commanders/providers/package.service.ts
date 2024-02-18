@@ -11,7 +11,7 @@ export class packageService {
   async backup() {
     const packageJson = await getPackageJson(global.configs.packageDir);
     await backup(packageJson, global.configs.backupDir);
-    global._logger.success(`Backup complete.`);
+    global._logger.success(`Backup Generated.`);
   }
 
   async restore() {
@@ -31,10 +31,12 @@ export class packageService {
     );
 
     await backup(packageJson, global.configs.backupDir);
+    global._logger.success(`Backup Generated.`);
+
     const refactorConfig = getConfig(packageJson);
     const env = loadEnv(baseEnv, extraEnvs);
     const refactoredPackage = operationRunner(packageJson, refactorConfig, env);
     await restore(refactoredPackage, global.configs.packageDir);
-    global._logger.success(`Refactor complete.`);
+    global._logger.success(`Refactor completed.`);
   }
 }

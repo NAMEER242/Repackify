@@ -1,6 +1,6 @@
 {
   "name": "repackify",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "description": "A new package.json repackager offering a suite of features including refactoring, backing up package.json files, implementing environment variables within package.json, and more.",
   "author": {
     "name": "nameer haider",

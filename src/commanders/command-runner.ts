@@ -1,4 +1,6 @@
 import { Commander } from './commander';
+import { replaceEnvPlaceholders } from '../features/operations/env.operations';
+import { loadEnv } from '../commons/utils';
 
 export class CommandRunner {
   constructor(private readonly commands: Commander[]) {
@@ -20,7 +22,9 @@ export class CommandRunner {
   }
 
   private getArgs(): string[] {
-    return process.argv.slice(2);
+    const args = { args: process.argv.slice(2) };
+    const env = loadEnv('.env', []);
+    return replaceEnvPlaceholders(args, env)['args'];
   }
 
   async run(): Promise<boolean> {
