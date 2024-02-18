@@ -1,6 +1,6 @@
 {
   "name": "repackify",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A new package.json repackager offering a suite of features including refactoring, backing up package.json files, implementing environment variables within package.json, and more.",
   "author": {
     "name": "nameer haider",
@@ -45,7 +45,6 @@
     "start": "ts-node src/main.ts",
     "start:prod": "npm run build && node lib/main.js",
     "build": "tsc",
-    "publish": "npm run build && npm publish",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
