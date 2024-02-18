@@ -45,6 +45,7 @@
     "start": "ts-node src/main.ts",
     "start:prod": "npm run build && node lib/main.js",
     "build": "tsc",
+    "publish": "npm run build && npm publish",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
