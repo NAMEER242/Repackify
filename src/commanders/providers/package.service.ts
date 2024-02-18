@@ -21,11 +21,15 @@ export class packageService {
     global._logger.success('Package restored successfully.');
   }
 
-  async refactor(options: Record<string, any>) {
+  async refactor(options: Record<string, any>, decodeUri: boolean = true) {
     const baseEnv = options['env'] ?? '.env';
     const extraEnvs = (options['extra_env'] ?? '').split(',') ?? [];
 
-    const packageJson = await getPackageJson(global.configs.packageDir);
+    const packageJson = await getPackageJson(
+      global.configs.packageDir,
+      decodeUri,
+    );
+
     await backup(packageJson, global.configs.backupDir);
     const refactorConfig = getConfig(packageJson);
     const env = loadEnv(baseEnv, extraEnvs);
