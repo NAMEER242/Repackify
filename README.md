@@ -107,6 +107,20 @@ This command refactors the `package.json` file using the provided configuration.
 repack refactor --env .env --extra_env .env,.dev.env
 ```
 
+## Using With NPM Pre & Post Scripts
+In your package.json file, you can define pre and post scripts for certain NPM commands. These scripts will automatically run before and after the specified command. For example, you can define a preinstall script to refactor your package.json file before installation and a postinstall script to restore it after installation, and the same with publish command.
+
+```js
+// package.json
+
+"scripts": {
+  "preinstall": "repack refactor",
+  "postinstall": "repack restore",
+  "Prepare": "repack refactor",
+  "postpublish": "repack restore"
+}
+```
+
 ## License
 
 Repackify is [MIT licensed](LICENSE).
